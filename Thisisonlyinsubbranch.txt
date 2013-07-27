@@ -1,0 +1,3 @@
+This file should only appear in the test branch "subbranch".
+
+I'm also going to edit file.txt and I'm hoping that those changes only appear in subbranch as well.  
