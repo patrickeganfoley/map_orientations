@@ -3,3 +3,5 @@ This file is a file.
 
 Now I'm changing isht.
 
+
+This line should only exist in the branch "subbranch".  In the branch, "master", it should not exist. 
