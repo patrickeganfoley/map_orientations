@@ -1,0 +1,3 @@
+I just used 
+$ git remote set-url origin ssh:kdjsflkdjf;askjdf;kj
+to switch origin's url from https to ssh, in order to use the keys I uploaded.
