@@ -1,0 +1,35 @@
+function coordinateRotationFromXYZ(angleX, angleY, angleZ)
+
+
+
+
+
+end
+
+
+
+
+
+
+function rotationMatrix(axisVector, angle)
+
+    #  First check if the vector is a unit vector.
+    axisVector /= sqrt(sum(axisVector.^2))
+    (x, y, z) = axisVector
+
+
+    #  Now just plug in values from
+    #  en.wikipedia.org/wiki/Rotation_matrix#Roataion matrix from axis and angle
+    tensor_product_matrix = [ x^2     x*y    x*z ;
+                             x*y     y^2    y*z ;
+                             x*z     y*z    z^2 ]
+    cross_product_matrix = [ 0    -z    y ;
+                             z     0   -x ;
+                            -y     x    0 ]
+    R = eye(3)*cos(angle) + 
+        sin(angle)*cross_product_matrix + 
+        (1-cos(angle))*tensor_product_matrix
+
+    return R
+
+end
