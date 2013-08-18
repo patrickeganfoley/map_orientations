@@ -21,12 +21,18 @@ end
 
 
 
-function gallPetersPixels([longitude, latitude], image_size)
-
+function gallPetersPixels(longitudeAndLatitude, image_size)
     (nx, ny) = image_size
 
+#    (longitude, latitude) = longitudeAndLatitude
     #  longitudes are from 0 to 2 pi.
     #  lats are -pi/2 to pi/2.
+    longitude = longitudeAndLatitude[:,1]
+    latitude = longitudeAndLatitude[:,2]
+
+    longitude = (longitude + 2*pi) % (2*pi)
+    latitude = (latitude + 2*pi) % (2*pi)
+
 
     u =  int( longitude * (nx/(2*pi)))
     v =  int( (ny/2)* (sin(latitude)+1))
@@ -37,13 +43,16 @@ end
 
 
 
-function spatialCoordinatesFromLongitudeAndLatitude([longitude, latitude])
+function spatialCoordinatesFromLongitudeAndLatitude(longitudeAndLatitude)
 
     #  This returns a row matrix (n_pixel rows, 3 columns) with 
     #  positions in three dimensional space.
 
-    x = cos(longitude)*cos(latitude)
-    y = sin(longitude)*cos(latitude)
+    longitude = longitudeAndLatitude[:,1]
+    latitude = longitudeAndLatitude[:,2]
+
+    x = cos(longitude) .* cos(latitude)
+    y = sin(longitude) .* cos(latitude)
     z = sin(latitude)
 
     return [x y z]
@@ -52,13 +61,19 @@ end
 
 
 
-function longitudeAndLatitudeFromSpatialCoordinates( [x y z] )
+function longitudeAndLatitudeFromSpatialCoordinates( xyz )
+
+    # (x, y, z) = xyz
+    x = xyz[:,1]
+    y = xyz[:,2]
+    z = xyz[:,3]
+
 
     latitude = asin(z)
 
-    longitude = 
+    longitude = atan2(y, x)
 
-
+    return [longitude latitude]
 
 end
 
