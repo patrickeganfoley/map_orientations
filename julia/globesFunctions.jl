@@ -4,6 +4,50 @@
 #    coordinateRotationFromXYZ
 #    rotationMatrix
 
+#  The following several functions will work to combine each of the others,
+#  until I have just one function to get the right pixel value.
+
+
+
+function newPixelsFromPixels(pixels, image_size, rotMat)
+
+    longLat = longitudeAndLatitudeFromGallPetersPixels(pixels, image_size)
+    spatialCoords = spatialCoordinatesFromLongitudeAndLatitude(longLat)
+    newCoords = (rotMat * spatialCoords')'
+    newLongLat = longitudeAndLatitudeFromSpatialCoordinates(newCoords)
+    newPixels = gallPetersPixels(newLongLat, image_size)
+
+    #  I need to make sure I don't have zeros or maxes.
+
+    for row_i in 1:size(newPixels,1)
+        if newPixels[row_i, 1] <= 0
+            newPixels[row_i, 1] = 1
+        end
+        if newPixels[row_i, 1] > image_size[1]
+            newPixels[row_i, 1] = image_size[1]
+        end
+        if newPixels[row_i, 2] <= 0
+            newPixels[row_i, 2] = 1
+        end
+        if newPixels[row_i, 2] > image_size[2]
+            newPixels[row_i, 2] = image_size[2]
+        end
+    end
+
+    return(newPixels)
+
+
+end
+
+
+
+function spatialCoordinatesFromPixels(pixels, image_size)
+
+    longLat = longitudeAndLatitudeFromGallPetersPixels(pixels, image_size)
+    spatialCoords = spatialCoordinatesFromLongitudeAndLatitude(longLat)
+    return(spatialCoords)
+
+end
 
 
 function longitudeAndLatitudeFromGallPetersPixels(pixels, image_size)
@@ -12,8 +56,8 @@ function longitudeAndLatitudeFromGallPetersPixels(pixels, image_size)
     (nx, ny) = image_size
     #  This computes longitude and latitude for a given pixel value pair.
 
-    longitude = ((pixels[:,1]* (2*pi/nx)) + pi) % (2*pi)
-    latitude = 2 * asin( (2*pixels[:,2]/ny) -1)
+    longitude =  ((pixels[:,1]* (2*pi/nx)) + pi) % (2*pi)
+    latitude = asin( (2*pixels[:,2]/ny) -1)
 
     return([longitude latitude])
 
@@ -33,8 +77,28 @@ function gallPetersPixels(longitudeAndLatitude, image_size)
     longitude = (longitude + 2*pi) % (2*pi)
     latitude = (latitude + 2*pi) % (2*pi)
 
+#println("Size of longitude is", size(longitude))
 
-    u =  int( longitude * (nx/(2*pi)))
+#  I need to very intentionally treat longitude here.
+#    u = ( 0 .<= longitude .<= pi) ? 
+#        int( nx * ( 0.5 + (longitude / (2*pi) ) ) ) :
+#        int( nx * ( 0 + ((longitude - pi ) / (2*pi))))
+ #   u = ones(size(longitude))
+    u = 1
+
+    #  I am so sorry.
+    #for i = 1:size(longitudeAndLatitude,1)
+
+        if (0 <= longitude[1] <= pi)
+            u = int( nx * (0.5 + (longitude / (2*pi))))
+        end
+        if (pi < longitude[1] <= (2*pi))
+            u = int(nx * (longitude - pi) / (2*pi) )
+        end
+    #end
+
+
+#    u =  int( longitude * (nx/(2*pi)))
     v =  int( (ny/2)* (sin(latitude)+1))
 
     return [u v]
@@ -70,8 +134,9 @@ function longitudeAndLatitudeFromSpatialCoordinates( xyz )
 
 
     latitude = asin(z)
-
     longitude = atan2(y, x)
+
+    longitude = (longitude + 2*pi ) % (2*pi)
 
     return [longitude latitude]
 
