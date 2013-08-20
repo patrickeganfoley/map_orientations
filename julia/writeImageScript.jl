@@ -3,17 +3,23 @@
 #  globe rotating while you project it.
 
 #  I assume here you've already read in "Images" and "globesFunctions"
+using Images
+include("/home/pfoley/globesRepository/julia/globesFunctions.jl")
+
+function writeImage(theta_x, theta_y, theta_z, originalImage, newName)
 
 
 
 
 
 
-
-globeImage = imread("/home/pfoley/globesRepository/earth-huge.png")
+#globeImage = imread("/home/pfoley/globesRepository/earth-huge.png")
 #globeImage = imread("/home/pfoley/globesRepository/peters-sat.jpg")
 #newImage = imread("/home/pfoley/globesRepository/peters-sat.jpg")
-newImage = imread("/home/pfoley/globesRepository/earth-huge.png")
+#newImage = imread("/home/pfoley/globesRepository/earth-huge.png")
+
+globeImage = imread(originalImage)
+newImage = imread(originalImage)
 
 println("Read in the image ...")
 
@@ -24,9 +30,9 @@ gamma = (ny * pi) / (nx)
 
 image_size = (nx, ny)
 
-theta_x = 0
-theta_y = 0.6
-theta_z = 0
+#theta_x = 0
+#theta_y = 0.6
+#theta_z = 0
 
 rotMat = coordinateRotationFromXYZ(theta_x, theta_y, theta_z)
 
@@ -36,6 +42,11 @@ rotMat = coordinateRotationFromXYZ(theta_x, theta_y, theta_z)
 assignable_pixel_index = 1
 #  Now loop through the image in the order in which you will assign values.
 for y_index = 1:ny
+
+#  Do just the y stuff here.  
+latitude = asin( (2 * y_index / ny)  - 1 )
+
+
 for x_index = 1:nx
 
 #  At each loop, you want to apply the full transformation to get the new_x and new_y.
@@ -44,7 +55,6 @@ for x_index = 1:nx
 
 #  Assign longitude and latitude.
 longitude = (2*pi) * ((x_index / nx) - (1/2))
-latitude = asin( (2 * y_index / ny)  - 1 )
 
 #  Assign spatial coordinates
 spatial_coordinates = 
@@ -100,7 +110,9 @@ end
 
 end
 
-println("Completed image.  About to write the image...")
-imwrite(newImage, "/home/pfoley/newGlobe2.png")
+#newImageName = "/home/pfoley/map$theta_x.$theta_y.$theta_z.png"
+println("Completed image.  About to write the image to $newName...")
+imwrite(newImage, newName)
 println("Wrote the image.")
-filename = "/home/pfoley/angle$thetaX"
+
+end

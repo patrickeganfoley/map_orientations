@@ -101,5 +101,5 @@ end
 end
 
 println("Completed image.  About to write the image...")
-imwrite(newImage, "/home/pfoley/newGlobeMid.png")
+imwrite(newImage, "/home/pfoley/gpLarge1.png")
 println("Wrote the image.")
