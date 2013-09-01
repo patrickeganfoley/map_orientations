@@ -1,6 +1,11 @@
 #  THis is my third take at a globes sript.  
 #  I'm going to walk through pixel by pixel.
 
+#  Note:  if you move to quaternions, all you need to do if you want a 
+#  random walk on SO(3) is use small rotations q, and then for a new one,
+#  left multiply the current rotation (q) by your new component, so 
+#  q *= p.  
+
 
 using Images
 include("/home/pfoley/globesRepository/julia/globesFunctions.jl")
