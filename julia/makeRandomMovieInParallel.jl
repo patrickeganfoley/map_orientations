@@ -1,6 +1,7 @@
 #  This is a script to make a movie.
 include("/home/pfoley/globesRepository/julia/lazyQuaternion.jl")
 
+
 resolution = 30
 quaternionSize = 0.1
 
@@ -19,9 +20,9 @@ for i = 2:resolution
 end
 
 @parallel for i = 1:resolution
-
-    resolution = 300
-    ogName = "/home/pfoley/miller_graphical_large.jpg"
+    using Images
+    resolution = 30
+    ogName = "/home/pfoley/globesRepository/maps/miller_graphical_large.jpg"
     outputFolder = "/home/pfoley/globesRepository/sixthMovie/"
     include("/home/pfoley/globesRepository/julia/writeImageForQuaternion.jl")
     include("/home/pfoley/globesRepository/julia/lazyQuaternion.jl")

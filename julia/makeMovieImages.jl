@@ -8,7 +8,7 @@ include("/home/pfoley/globesRepository/julia/writeImageScript.jl")
 #  First loop through the y direction.
 resolution = 15
 
-for i = 1:100
+for i = 1:resolution
 
     theta_y = (i-1)*(1/resolution)*(2*pi)
     new_image_name = "$(outputFolder)image$(i).png"

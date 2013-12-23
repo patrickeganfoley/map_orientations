@@ -1,3 +1,5 @@
+include("lazyQuaternion.jl")
+
 phxLatitude = (33 + (27/60)) * (pi/180)
 phxLongitude = - (112 + (4/60))*(pi/180)
 
@@ -38,7 +40,8 @@ function spatialCoordinatesToCenterQuaternion(spatial_coordinates)
     center_coordinates = [1 0 0]
 
     angle = acos(spatial_coordinates[1])
-    uv = spatial_coordinates * center_coordinates
+    
+    uv = spatial_coordinates' * center_coordinates
     crossprod = [(uv[2,3] - uv[3,2])   (uv[3,1] - uv[1,3])   (uv[1,2] - uv[2,1])]
 
     #  Then you can say R is rotating about crossprod by angle.  But I don't have that yet.  I guess I do, w quaternions.  
@@ -93,11 +96,11 @@ q_centering = spatialCoordinatesToCenterQuaternion(midPointOnSurface)
 #  Now obtain the quaternion pushing both points to the middle horizontal.
 newPointA = rotateByQuaternion(spatial_coordinates1, q_centering)
 newLatitudeA = asin(newPointA[3])
-q_toHorizntal = pushPointsToHorizontalQuaternion(newLatitudeA)
+q_toHorizontal = pushPointsToHorizontalQuaternion(newLatitudeA)
 
 
 #  multiply them and you're done.
-q = multiplyQuaternion(q_toHorizontal, q_centering)
+q = multiplyQuaternions(q_toHorizontal, q_centering)
 return q
 
 end
