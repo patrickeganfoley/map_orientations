@@ -1,3 +1,7 @@
+##  This is all based off the real julia implementation of
+##  complex numebrs.  I don't think I'm at that level yet so I'm waiting
+##  and will first make a dumb quaternion.
+
 immutable Quaternion{T <: Real} <: Number
     re::T
     i::T
