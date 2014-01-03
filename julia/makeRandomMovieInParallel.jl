@@ -1,9 +1,8 @@
 #  This is a script to make a movie.
 include("/home/pfoley/globesRepository/julia/lazyQuaternion.jl")
 
-
-resolution = 30
-quaternionSize = 0.1
+resolution = 500
+quaternionSize = 0.05
 
 
 quaternions = zeros(resolution, 4)
@@ -19,13 +18,18 @@ for i = 2:resolution
     quaternions[i,:] = q
 end
 
+@everywhere using Images
+@everywhere include("/home/pfoley/globesRepository/julia/writeImageForQuaternion.jl")
+@everywhere include("/home/pfoley/globesRepository/julia/lazyQuaternion.jl")
+
+println("Using images everywhere.")
+
 @parallel for i = 1:resolution
-    using Images
-    resolution = 30
+
+    resolution = 500
+
     ogName = "/home/pfoley/globesRepository/maps/miller_graphical_large.jpg"
     outputFolder = "/home/pfoley/globesRepository/sixthMovie/"
-    include("/home/pfoley/globesRepository/julia/writeImageForQuaternion.jl")
-    include("/home/pfoley/globesRepository/julia/lazyQuaternion.jl")
 
     #  Pull quaternion
     current_q = quaternions[i,:]
