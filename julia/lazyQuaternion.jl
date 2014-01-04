@@ -12,6 +12,7 @@ i(q::quaternion)  = q.values[2]
 j(q::quaternion)  = q.values[3]
 k(q::quaternion)  = q.values[4]
 
+import Base.conj
 conj(q::quaternion) = quaternion([Re(q) -i(q) -j(q) -k(q) ])
 abs(q::quaternion) = sqrt( sum((q*conj(q)).values.^2) )
 
@@ -19,7 +20,7 @@ abs(q::quaternion) = sqrt( sum((q*conj(q)).values.^2) )
 -(q::quaternion, p::quaternion) = quaternion(q.values - p.values)
 
 scalar(q::quaternion) = Re(q)
-vector(q::quaternion) = quaternion([0 i(q) j(q) k(q) ])
+vector(q::quaternion) = [i(q) j(q) k(q)]
 
 function *(q1::quaternion, q2::quaternion)
 
@@ -27,14 +28,13 @@ function *(q1::quaternion, q2::quaternion)
 
     re1  = Re(q1)
     re2  = Re(q2)
-    vec1 = vector(q1).values[2:4]
-    vec2 = vector(q2).values[2:4]
+    vec1 = reshape(vector(q1), 3)
+    vec2 = reshape(vector(q2), 3)
 
     re3  = re1*re2 - dot(vec1, vec2)
     vec3 = re1*vec2 + re2*vec1 + cross(vec1, vec2)
 
     return quaternion([re3 vec3[1] vec3[2] vec3[3]])
-
 end
 
 *(q::quaternion, s::Float64) = quaternion(s*q.values)
@@ -51,7 +51,7 @@ function *(q::quaternion, a::Array{Float64,2})
         error("Length of vector not equal to three.")
     end
 
-    quaternionA = quaternion([0 a])
+    quaternionA = quaternion([0 a[1] a[2] a[3]])
 
     return q * quaternionA
 
