@@ -1,7 +1,10 @@
 include("lazyQuaternion.jl")
+include("coordinates.jl")
 
 phxLatitude = (33 + (27/60)) * (pi/180)
 phxLongitude = - (112 + (4/60))*(pi/180)
+
+phoenix = S
 
 ugaLatitude = - (0 + (42 + (36/60)/60)) * (pi / 180)
 ugaLongitude = (31 + (24 + (18/60)/60)) * (pi /180)
