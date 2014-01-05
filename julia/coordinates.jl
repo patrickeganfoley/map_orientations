@@ -1,5 +1,6 @@
 #  This contains types and functions to go back and forth between
 #  (φ,  λ) pairs and (x, y, z) positions.
+import Base.abs
 
 type SphCoords
     φ::Float64
@@ -24,8 +25,8 @@ type SpatialCoords
 
     function SpatialCoords(x::Real, y::Real, z::Real)
         normSquared = x^2 + y^2 + z^2
-        if abs( 1 - normSquared ) > 1e-8
-            println("Warning: a spatial coordinate was not on the unit sphere.")
+        if !(-1e-8 <  1 - normSquared  < 1e-8)
+            # println("Warning: a spatial coordinate was not on the unit sphere.")
             norm = sqrt(normSquared)
             x /= norm
             y /= norm
@@ -62,3 +63,39 @@ function SphCoords(position::SpatialCoords)
 
     return SphCoords(φ, λ)
 end
+
++(a::SpatialCoords, b::SpatialCoords) =
+    SpatialCoords(a.x+b.x, a.y+b.y, a.z+b.z)
+
+import Base.print
+
+function print(position::SphCoords)
+    φ = position.φ * (180 / pi)
+    λ = position.λ * (180 / pi)
+
+    north = φ > 0
+    east  = λ > 0
+
+    #  Right now I just print degrees.
+    if north
+        print("$(round(φ))ᵒ North,   ")
+    else
+        print("$(round(φ))ᵒ South,   ")
+    end
+
+    if east
+        println("$(round(λ))ᵒ East \n")
+    else
+        println("$(round(λ))ᵒ West \n")
+    end
+end
+
+function print(position::SpatialCoords)
+    println("($(position.x) , $(position.y) , $(position.z) )")
+end
+
+#  This doesn't work and I don't know why.  
+import Base.show
+show(STDOUT, position::SpatialCoords) = print(STDOUT, "$position")
+show(STDOUT, position::SphCoords)     = print(STDOUT, position)
+

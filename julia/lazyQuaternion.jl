@@ -73,6 +73,21 @@ end
 rotateByQuaternion(x::Array{Float64,2}, q::quaternion) =
     vector(q*x*conj(q))
 
+rotateByQuaternion(loc::SpatialCoords, q::quaternion) =
+    rotateByQuaternion([loc.x loc.y loc.z], q)
+
+function rotateByQuaternion(loc::SphCoords, q::quaternion)
+
+    space      = SpatialCoords(loc)
+    spacePrime = SpatialCoords(rotateByQuaternion(space, q))
+    locPrime   = SphCoords(spacePrime)
+
+    return locPrime
+
+end
+
+
+
 function randomVersor(size)
     #  In quaternion rotation, the real part of q is equal to the
     #  cosine of one half the angle by which the vector is rotated.

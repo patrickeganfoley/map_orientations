@@ -7,7 +7,7 @@
 #using Images
 #include("/home/pfoley/globesRepository/julia/globesFunctions.jl")
 
-function writeImageForQuaternion(quaternion, originalImage, newName)
+function writeImageForQuaternion(q::quaternion, originalImage, newName)
     
     #globeImage = imread("/home/pfoley/globesRepository/earth-huge.png")
     #globeImage = imread("/home/pfoley/globesRepository/peters-sat.jpg")
@@ -21,7 +21,7 @@ function writeImageForQuaternion(quaternion, originalImage, newName)
     
     (nc, nx, ny) = size(globeImage)
     R = nx / (2*pi)
-    gamma = (ny * pi) / (nx)
+    γ = (ny * pi) / (nx)
     #newImage = globeImage
     
     image_size = (nx, ny)
@@ -33,8 +33,7 @@ function writeImageForQuaternion(quaternion, originalImage, newName)
     for y_index = 1:ny
     
     #  Do just the y stuff here.  
-    latitude = asin( (2 * y_index / ny)  - 1 )
-    
+    φ = asin( (2 * y_index / ny)  - 1 )    
     
     for x_index = 1:nx
     
@@ -42,34 +41,27 @@ function writeImageForQuaternion(quaternion, originalImage, newName)
     #  Then put the correct pixel value in each color.  
     
     
-    #  Assign longitude and latitude.
-    longitude = (2*pi) * ((x_index / nx) - (1/2))
+    #  Assign longitude.
+    λ = (2*pi) * ((x_index / nx) - (1/2))
     
-    #  Assign spatial coordinates
-    spatial_coordinates = 
-        [cos(longitude)*cos(latitude) sin(longitude)*cos(latitude) sin(latitude)]
-    
-    #  Rotate spatial coordinates
-    new_spatial_coordinates = rotateByQuaternion(spatial_coordinates', quaternion)
-    
-    #  Obtain new longitude and latitude
-    new_longitude = atan2(new_spatial_coordinates[2], new_spatial_coordinates[1])
-    new_latitude = asin(new_spatial_coordinates[3])
-    
+    newLocation = rotateByQuaternion(SphCoords(φ, λ), q)
+    newφ = newLocation.φ
+    newλ = newLocation.λ
     
     #  Adjust to ensure longitudes and latitudes are in the appropriate ranges.
-    if new_longitude > pi
-        new_longitude = new_longitude - (2*pi)
+    if newλ > pi
+        newλ = newλ - (2*pi)
     end
     
     
     #  Obtain new pixel locations
     #new_x = int(R*new_longitude)
-    #new_y = int(gamma * R * sin(new_latitude))
-    new_x = int( nx * ((1/2) + (new_longitude/(2*pi))))
-    new_y = int( ny * (1/2) * (1+sin(new_latitude)))
+    #new_y = int(γ * R * sin(new_latitude))
+    new_x = int( nx * ((1/2) + (newλ/(2*pi))))
+    new_y = int( ny * (1/2) * (1+sin(newφ)))
     
     #  Ensure new pixels are within range
+    #  This is why I'm sometimes shrinking things.  
     if new_x < 1
         new_x = 1
     end
