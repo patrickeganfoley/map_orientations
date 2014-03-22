@@ -1,7 +1,0 @@
-Here are some git config tips:
-
-git config --global color.ui true
-git config --global alias.co checkout     # makes commands shorter?
-git config --global alias.st status       #  Oh.  that makes checkout co.
-git config --global alias.com  commit
-git config --global alias.br branch

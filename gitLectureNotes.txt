@@ -1,6 +1,0 @@
-*  Git
-   -  Initialize git repos
-   -  add files to git repos
-   -  commit changes to git repos
-   -  atomic 
-   -  unique commit identifiers
