@@ -26,6 +26,7 @@ function centeringQuaternion(position::SpatialCoords)
     #  The dot product of center w/ anything else is just the x coordinate.
     angle = acos(0.5*spatial_coordinates[1])    
     crossProduct = cross(spatial_coordinates, center_coordinates)
+    crossProduct ./= norm(crossProduct)
 
     #  Then you can say R is rotating about crossprod by angle.  But I don't have that yet.  I guess I do, w quaternions.  
     q = zeros(4,1)
