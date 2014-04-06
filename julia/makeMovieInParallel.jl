@@ -3,7 +3,7 @@
 #  using Images
 #  using Distributions
 
-resolution = 4000
+resolution = 8000
 
 @everywhere using Images
 @everywhere using Distributions
@@ -13,13 +13,13 @@ resolution = 4000
 
 #  This is ten degrees.  
 #  This really ought to be much smaller.  maybe pi/180.  It needs to be smoother.  
-smallAngle = pi/18
+smallAngle = pi/180
 
 #  First generate all the quaternions.  
-marginalQuaternions = Array(quaternion, 4000)
-quaternions         = Array(quaternion, 4000)
+marginalQuaternions = Array(quaternion, 8000)
+quaternions         = Array(quaternion, 8000)
 
-for iter = 1:4000
+for iter = 1:8000
 
     randAxis = rand(Normal(), 3)
     randAxis ./= norm(randAxis)
@@ -29,22 +29,22 @@ for iter = 1:4000
 
 end
 
-quaternions = Array(quaternion, 4000)
+quaternions = Array(quaternion, 8000)
 quaternions[1] = quaternion([1.0, 1.0, 0.0, 0.0]) # Start with null.
-for iter = 2:4000
+for iter = 2:8000
 
     quaternions[iter] = marginalQuaternions[iter] * quaternions[iter-1]
 
 end
 
 #  Now I can pull those in parallel.  
-@parallel for iter = 1:4000
+@parallel for iter = 1:8000
 
-    resolution = 4000
+    resolution = 8000
 
     #ogName = "/home/pfoley/very_large_upsideDown.jpg"
     ogName = "/home/pfoley/globesRepository/small_sat_peters.jpg"
-    outputFolder = "/home/pfoley/smallMovie/"
+    outputFolder = "/home/pfoley/smallMovie2/"
 
 
     #  Change this to parallel loop.
