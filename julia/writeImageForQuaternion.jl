@@ -7,6 +7,9 @@
 #using Images
 #include("/home/pfoley/globesRepository/julia/globesFunctions.jl")
 
+#  This is all just for cylindrical to cylindrical.  
+#  I should still check out mollweide and winkel or whatever.  
+
 function writeImageForQuaternion(q::quaternion, originalImage, newName)
     
     #globeImage = imread("/home/pfoley/globesRepository/earth-huge.png")
@@ -20,9 +23,10 @@ function writeImageForQuaternion(q::quaternion, originalImage, newName)
     println("Read in the image ...")
     
     (nc, nx, ny) = size(globeImage)
-    R = nx / (2*pi)
-    γ = (ny * pi) / (nx)
-    #newImage = globeImage
+    R = nx / (2*pi)         # r is the radius of the globe in pixels.
+    γ = (ny * pi) / (nx)    # γ is the stretch factor that
+                            # distinguishes cylindrical projections.
+                            # The Gall-peters projection uses γ = 2.
     
     image_size = (nx, ny)
     
@@ -58,6 +62,12 @@ function writeImageForQuaternion(q::quaternion, originalImage, newName)
             #new_x = int(R*new_longitude)
             #new_y = int(γ * R * sin(new_latitude))
             new_x = int( nx * ((1/2) + (newλ/(2*pi))))
+
+            #  I do actually need to change this.  math says:
+            new_y = int( γ * R * sin(newφ) + ny/2 )  
+            #  Problem with that is I need to map this onto 0 to ny,
+            #  not -.5ny to .5ny.  so I need to add another 0.5 ny.
+            #  Nah.  they turn out to be the same thing anyway.  
             new_y = int( ny * (1/2) * (1+sin(newφ)))
             
             #  Ensure new pixels are within range

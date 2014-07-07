@@ -7,6 +7,7 @@
 
 using Images
 using Distributions
+#
 include("/home/pfoley/globesRepository/julia/globesFunctions.jl")
 include("/home/pfoley/globesRepository/julia/positioningFunctions.jl")
 include("/home/pfoley/globesRepository/julia/writeImageForQuaternion.jl")
@@ -15,8 +16,9 @@ include("/home/pfoley/globesRepository/julia/writeImageForQuaternion.jl")
 
 #ogImage = "/home/pfoley/globesRepository/small_sat_peters.jpg"
 #ogImage = "/home/pfoley/globesRepository/earth-huge.png"
-ogImage = "/home/pfoley/globesRepository/bigWorld.jpg"
-newName = "/home/pfoley/randTest.png"
+ogImage = "/home/pfoley/globesRepository/maps/miller_graphical_large.jpg"
+#ogImage = "/home/pfoley/globesRepository/maps/Gall-peters_smallest.png"
+newName = "/home/pfoley/speedTest.png"
 
 smallAngle = pi/10
 
@@ -51,7 +53,7 @@ axis = [-1.0, 0.0, 0.0] # slightly clockwise.  asia down, usa up.
 axis = [0, 1.0, 0.0] # pull everything slightly down.  
 
 #  Now make some randoms.  
-for iter = 1:100
+for iter = 1:20
 
     rotationAxis = rand(Normal(), 3)
     rotationAxis ./= norm(rotationAxis)
@@ -60,7 +62,7 @@ for iter = 1:100
 
     rotQuat = quaternion( [ cos(rotationAngle/2), sin(rotationAngle/2) .* rotationAxis ] )
     
-    newName = "/home/pfoley/newBig$(iter).png"
+    newName = "/home/pfoley/newtest$(iter).png"
     writeImageForQuaternion(rotQuat, ogImage, newName)
 
 end

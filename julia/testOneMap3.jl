@@ -15,9 +15,8 @@ include("/home/pfoley/globesRepository/julia/writeImageForQuaternion.jl")
 
 #ogImage = "/home/pfoley/globesRepository/small_sat_peters.jpg"
 #ogImage = "/home/pfoley/globesRepository/earth-huge.png"
-#ogImage = "/home/pfoley/globesRepository/bigWorld.jpg"
-ogImage = "/home/pfoley/globesRepository/peters-political2.jpg"
-newName = "/home/pfoley/politicalmoving.png"
+ogImage = "/home/pfoley/globesRepository/bigWorld.jpg"
+newName = "/home/pfoley/randTest.png"
 
 smallAngle = pi/10
 
@@ -51,25 +50,17 @@ axis = [1.0, 0.0, 0.0] #  slightly counterclockwise.  asia up, usa down.
 axis = [-1.0, 0.0, 0.0] # slightly clockwise.  asia down, usa up.  
 axis = [0, 1.0, 0.0] # pull everything slightly down.  
 
-curquaternion = quaternion([1.0, 0.0, 0.0, 0.0 ])
-
 #  Now make some randoms.  
-for iter = 1:1000
+for iter = 1:100
 
     rotationAxis = rand(Normal(), 3)
     rotationAxis ./= norm(rotationAxis)
 
-    #  Move by a tenth of a degree.  That should be abour 6 miles or so.  
-    rotationAngle = (2*pi/360) * (1/10)
+    rotationAngle = 2 * pi * rand(1)
 
     rotQuat = quaternion( [ cos(rotationAngle/2), sin(rotationAngle/2) .* rotationAxis ] )
     
-    curquaternion = curquaternion * rotQuat
-
-    newName = "/home/pfoley/movingpoliticalmapB$(iter).png"
-    writeImageForQuaternion(curquaternion, ogImage, newName)
+    newName = "/home/pfoley/otherNewBig$(iter).png"
+    writeImageForQuaternion(rotQuat, ogImage, newName)
 
 end
-
-#  Now save that quaternion if you want.  
-#  Nah.  

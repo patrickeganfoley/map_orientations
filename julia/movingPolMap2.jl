@@ -59,14 +59,14 @@ for iter = 1:1000
     rotationAxis = rand(Normal(), 3)
     rotationAxis ./= norm(rotationAxis)
 
-    #  Move by a tenth of a degree.  That should be abour 6 miles or so.  
-    rotationAngle = (2*pi/360) * (1/10)
+    #  Move by a tenth of a degree.  That should be abour 6 miles or so.  No this is straight up one degree.  About 60 miles.  
+    rotationAngle = (2*pi/360)
 
     rotQuat = quaternion( [ cos(rotationAngle/2), sin(rotationAngle/2) .* rotationAxis ] )
     
-    curquaternion = curquaternion * rotQuat
+    curquaternion = rotQuat * curquaternion
 
-    newName = "/home/pfoley/movingpoliticalmapB$(iter).png"
+    newName = "/home/pfoley/movingpoliticalmapTakeThree$(iter).png"
     writeImageForQuaternion(curquaternion, ogImage, newName)
 
 end
