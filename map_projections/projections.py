@@ -96,30 +96,29 @@ def spatialCoordinatesFromLongitudeAndLatitude(longitude, latitude):
     return(x, y, z)
 
 
-def longitudeAndLatitudeFromSpatialCoordinates(nxs, nys, nzs):
-    latitude = np.arcsin(nzs)
-    longitude = np.arctan2(nys, nxs)
-    longitude = (longitude + 2 * np.pi) % (2 * np.pi)
+def longitudeAndLatitudeFromSpatialCoordinates(xxs, yys, zzs):
+    latitude = np.arcsin(zzs)
+    longitude = np.arctan2(yys, xxs)
+
+    #  I need to flip longitudes.  
+    need_to_be_flipped = np.greater(longitude, np.pi)
+    longitude = longitude - need_to_be_flipped * (longitude) - need_to_be_flipped * (2*np.pi - longitude)
     
     return((longitude, latitude))
 
 
 def gall_peters_pixels(longitude, latitude, mapdims):
     nx, ny = mapdims
-    longitude = (longitude + 2 * np.pi) % (2*np.pi)
-
-    #  I need to flip longitudes.  
-    need_to_be_flipped = np.greater(longitude, np.pi)
-    longitude = longitude - need_to_be_flipped * (longitude) - need_to_be_flipped * (2*np.pi - longitude)
     
     u = nx * (0.5 + (longitude / (2*np.pi)))
-    #if (np.pi <= longitude <= (2*np.pi)):
-    #    u = int( nx * (longitude - np.pi) / (2*np.pi))
-    
     v = (ny/2) * (np.sin(latitude)+1.0)
     
     u = u.astype(int)
     v = v.astype(int)
+
+    #  Happens w/ rounding.
+    u[u == nx] = nx - 1
+    v[v == ny] = 0
     
     return((u, v))
 
