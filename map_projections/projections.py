@@ -84,7 +84,7 @@ def longitudeAndLatitudeFromGPPixel(x, y, mapdims):
     #  lambda = (x/R) * sqrt(2)
     #  phi = arcsin((y/R) / sqrt(2))
     #
-    longitude = (x * ((2.0 * np.pi / nx) + np.pi )) % (2.0 * np.pi)
+    longitude = x * (2.0 * np.pi / float(nx) ) - np.pi 
     latitude = np.arcsin(2.0 * ( (y / ny) - (0.5)) )
     return(longitude, latitude)
 
