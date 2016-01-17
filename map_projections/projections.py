@@ -1,4 +1,6 @@
 import numpy as np
+from copy import deepcopy
+import matplotlib.pyplot as plt
 
 def transform_map(map_image, rot_mat, debug = True):
     ny, nx, _ = map_image.shape
