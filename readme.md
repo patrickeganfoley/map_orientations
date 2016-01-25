@@ -16,6 +16,6 @@ This code produces maps like this one:
 
 These are made with night light maps.
 
-![Lights Map with a Random Rotation](output/lights1.png)
-![Lights Map with a Random Rotation](output/lights2.png)
-![Lights Map with a Random Rotation](output/lights3.png)
+![Lights Map with a Random Rotation](lights1.jpg)
+![Lights Map with a Random Rotation](lights2.jpg)
+![Lights Map with a Random Rotation](lights3.jpg)
