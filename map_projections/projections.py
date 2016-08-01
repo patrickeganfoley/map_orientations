@@ -3,7 +3,8 @@ from copy import deepcopy
 import matplotlib.pyplot as plt
 
 def transform_map(map_image, rot_mat, 
-                  in_projection = 'platecarre', out_projection = 'platecarre',
+                  in_projection = 'platecarre', 
+                  out_projection = 'platecarre',
                   debug = True):
 
     ny, nx, _ = map_image.shape
@@ -25,12 +26,13 @@ def transform_map(map_image, rot_mat,
     elif in_projection == 'gallpeters':
         longs, lats = longitudeAndLatitudeFromGPPixel(xs, ys, mapdims)
     else:
-        raise ValueError("""Please choose a valid projection from 'platecarre' or 'gallpeters'.""")
+        msg = """Please choose a valid projection from 'platecarre' or 'gallpeters'."""
+        raise ValueError(msg)
 
 
     if debug:
         print 'shape of longs and lats are {} and {}'.format(longs.shape, lats.shape)
-        print'longitudes histogram'
+        print 'longitudes histogram'
         plt.hist(longs)
         print 'latitudes histogram'
         plt.hist(lats)
@@ -92,17 +94,18 @@ def transform_map(map_image, rot_mat,
     return(new_map)
 
 def longitudeAndLatitudeFromGPPixel(x, y, mapdims):
+    """
+    GP Projection:
+    
+    x = R lambda / sqrt(2)
+    y = R sqrt(2) sin(phi)
+        lambda is longitude (left right)
+        phi is latitude (up down)
+        R is radius of globe, we'll use 1.0
+    lambda = (x/R) * sqrt(2)
+    phi = arcsin((y/R) / sqrt(2))
+    """
     nx, ny = mapdims
-    #  GP Projection:
-    #
-    #  x = R lambda / sqrt(2)
-    #  y = R sqrt(2) sin(phi)
-    #     lambda is longitude (left right)
-    #     phi is latitude (up down)
-    #     R is radius of globe, we'll use 1.0
-    #  lambda = (x/R) * sqrt(2)
-    #  phi = arcsin((y/R) / sqrt(2))
-    #
     longitude = x * (2.0 * np.pi / float(nx) ) - np.pi 
     latitude = np.arcsin(2.0 * ( (y / ny) - (0.5)) )
     return(longitude, latitude)
@@ -115,23 +118,24 @@ def longitudeAndLatitudeFromPCPixel(x, y, mapdims):
     return(longitude, latitude)
 
 
-
 def spatialCoordinatesFromLongitudeAndLatitude(longitude, latitude):
-    #longitude, latitude = longLat
     x = np.cos(longitude) * np.cos(latitude)
     y = np.sin(longitude) * np.cos(latitude)
     z = np.sin(latitude)
     return(x, y, z)
 
 
+def flip_longitudes(longitude):
+    #  which need to be flipped?
+    inds = np.greater(longitude, np.pi)
+    longitude = longitude - 2*np.pi * inds
+    return(longitude)
+
+
 def longitudeAndLatitudeFromSpatialCoordinates(xxs, yys, zzs):
     latitude = np.arcsin(zzs)
     longitude = np.arctan2(yys, xxs)
-
-    #  I need to flip longitudes.  
-    need_to_be_flipped = np.greater(longitude, np.pi)
-    longitude = longitude - need_to_be_flipped * (longitude) - need_to_be_flipped * (2*np.pi - longitude)
-    
+    longitude = flip_longitudes(longitude)
     return((longitude, latitude))
 
 
@@ -164,7 +168,6 @@ def pixel_for_plate_carre(longitude, latitude, mapdims):
     v[v == ny] = ny - 1
     
     return(u,v)
-
 
 
 def rotationMatrix(axis_vector, angle):
