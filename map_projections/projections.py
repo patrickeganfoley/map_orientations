@@ -2,14 +2,20 @@ import numpy as np
 from copy import deepcopy
 import matplotlib.pyplot as plt
 
-def transform_map(map_image, rot_mat, 
-                  in_projection = 'platecarre', 
-                  out_projection = 'platecarre',
-                  debug = True):
+
+def transform_map(map_image, rot_mat,
+                  in_projection='platecarre',
+                  out_projection='platecarre',
+                  debug=True):
+
+    invalid_projection_msg = (
+        "Please choose a projection from "
+        "'platecarre' or 'gallpeters'."
+    )
 
     ny, nx, _ = map_image.shape
     mapdims = (nx, ny)
-    
+
     if debug:
         print 'ny, nx are {} and {}'.format(ny, nx)
     xs, ys = np.meshgrid(np.arange(0, nx), np.arange(0, ny))
@@ -20,18 +26,16 @@ def transform_map(map_image, rot_mat,
         print 'xs min and max are {} and {}'.format(min(xs), max(xs))
         print 'ys min and max are {} and {}'.format(min(ys), max(ys))
 
-
     if in_projection == 'platecarre':
         longs, lats = longitudeAndLatitudeFromPCPixel(xs, ys, mapdims)
     elif in_projection == 'gallpeters':
         longs, lats = longitudeAndLatitudeFromGPPixel(xs, ys, mapdims)
     else:
-        msg = """Please choose a valid projection from 'platecarre' or 'gallpeters'."""
-        raise ValueError(msg)
-
+        raise ValueError(invalid_projection_msg)
 
     if debug:
-        print 'shape of longs and lats are {} and {}'.format(longs.shape, lats.shape)
+        print 'shape of longs and lats are {} and {}'.format(
+            longs.shape, lats.shape)
         print 'longitudes histogram'
         plt.hist(longs)
         print 'latitudes histogram'
@@ -44,7 +48,7 @@ def transform_map(map_image, rot_mat,
         plt.hist(yys)
         plt.hist(zzs)
     new_xxyyzz = np.dot(rot_mat, np.array([xxs, yys, zzs]))
-    
+
     new_xxs = np.squeeze(np.array(new_xxyyzz[0, :]))
     new_yys = np.squeeze(np.array(new_xxyyzz[1, :]))
     new_zzs = np.squeeze(np.array(new_xxyyzz[2, :]))
@@ -54,21 +58,20 @@ def transform_map(map_image, rot_mat,
         plt.hist(new_yys)
         plt.hist(new_zzs)
 
-    new_longs, new_lats = longitudeAndLatitudeFromSpatialCoordinates(new_xxs, new_yys, new_zzs)
+    new_longs, new_lats = longitudeAndLatitudeFromSpatialCoordinates(
+        new_xxs, new_yys, new_zzs)
     if debug:
         print 'new longs'
         plt.hist(new_longs)
         print 'new lats'
         plt.hist(new_lats)
 
-
     if out_projection == 'platecarre':
         new_xs, new_ys = pixel_for_plate_carre(new_longs, new_lats, mapdims)
     elif out_projection == 'gallpeters':
         new_xs, new_ys = gall_peters_pixels(new_longs, new_lats, mapdims)
     else:
-        raise ValueError("""Please choose a valid output projection from 'platecarre' or 'gallpeters'""")
-
+        raise ValueError(invalid_projection_msg)
 
     if debug:
         print 'new x pixels and new y pixels'
@@ -78,25 +81,24 @@ def transform_map(map_image, rot_mat,
         print 'shape of new xs and new ys is '
         new_xs.shape
         new_ys.shape
-    
         print 'ny, nx are {}, and {}'.format(ny, nx)
-    
-    
+
     new_xs.shape = (ny, nx)
     new_ys.shape = (ny, nx)
-    
+
     new_map = deepcopy(map_image)
     new_map[:, :, 0] = map_image[new_ys, new_xs, 0]
     new_map[:, :, 1] = map_image[new_ys, new_xs, 1]
     new_map[:, :, 2] = map_image[new_ys, new_xs, 2]
-    
+
     plt.imshow(new_map)
     return(new_map)
+
 
 def longitudeAndLatitudeFromGPPixel(x, y, mapdims):
     """
     GP Projection:
-    
+
     x = R lambda / sqrt(2)
     y = R sqrt(2) sin(phi)
         lambda is longitude (left right)
@@ -106,8 +108,8 @@ def longitudeAndLatitudeFromGPPixel(x, y, mapdims):
     phi = arcsin((y/R) / sqrt(2))
     """
     nx, ny = mapdims
-    longitude = x * (2.0 * np.pi / float(nx) ) - np.pi 
-    latitude = np.arcsin(2.0 * ( (y / ny) - (0.5)) )
+    longitude = x * (2.0 * np.pi / float(nx)) - np.pi
+    latitude = np.arcsin(2.0 * ((y / ny) - (0.5)))
     return(longitude, latitude)
 
 
@@ -141,40 +143,39 @@ def longitudeAndLatitudeFromSpatialCoordinates(xxs, yys, zzs):
 
 def gall_peters_pixels(longitude, latitude, mapdims):
     nx, ny = mapdims
-    
+
     u = nx * (0.5 + (longitude / (2*np.pi)))
     v = (ny/2) * (np.sin(latitude)+1.0)
-    
+
     u = u.astype(int)
     v = v.astype(int)
 
     #  Happens w/ rounding.
     u[u == nx] = nx - 1
     v[v == ny] = 0
-    
+
     return((u, v))
 
 
 def pixel_for_plate_carre(longitude, latitude, mapdims):
     nx, ny = mapdims
-    
+
     u = nx * (0.5 + (longitude / (2*np.pi)))
     v = ny * (0.5 + (latitude / np.pi))
-    
+
     u = u.astype(int)
     v = v.astype(int)
-    
+
     u[u == nx] = nx - 1
     v[v == ny] = ny - 1
-    
-    return(u,v)
+
+    return(u, v)
 
 
 def rotationMatrix(axis_vector, angle):
     axis_vector = axis_vector / np.sqrt(sum(axis_vector**2))
     (x, y, z) = axis_vector
-    
-    #  en.wikipedia.org/wiki/Rotation_matrix#Roataion matrix from axis and angle
+
     tensor_product_matrix = np.matrix([
             [x**2, x*y, x*z],
             [x*y, y**2, y*z],
@@ -188,12 +189,13 @@ def rotationMatrix(axis_vector, angle):
     R = np.eye(3) * np.cos(angle) + \
         cross_product_matrix * np.sin(angle) + \
         tensor_product_matrix * (1 - np.cos(angle))
-    
+
     return R
+
 
 def rotationFromXYZ(angle_x, angle_y, angle_z):
     r_x = rotationMatrix(np.array([1.0, 0.0, 0.0]), angle_x)
     r_y = rotationMatrix(np.array([0.0, 1.0, 0.0]), angle_y)
     r_z = rotationMatrix(np.array([0.0, 0.0, 1.0]), angle_z)
-    
+
     return (np.dot(np.dot(r_x, r_y), r_z))
