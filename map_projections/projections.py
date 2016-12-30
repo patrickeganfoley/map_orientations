@@ -199,3 +199,31 @@ def rotationFromXYZ(angle_x, angle_y, angle_z):
     r_z = rotationMatrix(np.array([0.0, 0.0, 1.0]), angle_z)
 
     return (np.dot(np.dot(r_x, r_y), r_z))
+
+
+def rotationFromTwoLocations(
+        longlatA,
+        longlatB):
+    """
+    Given two tuples (longitude and latitude),
+    finds a rotation that places the first center left,
+    and the second center right.
+    """
+    vec1 = spatialCoordinatesFromLongitudeAndLatitude(*longlatA)
+    vec2 = spatialCoordinatesFromLongitudeAndLatitude(*longlatB)
+
+    vec1 = np.array(vec1)
+    vec2 = np.array(vec2)
+
+    middle = vec1 + vec2
+    middlevec = middle / np.linalg.norm(middle)
+
+    crossprod = np.cross(vec1, vec2)
+    crossvec = crossprod / np.linalg.norm(crossprod)
+
+    #  Determines handedness / puts them in the center
+    thirdvec = np.cross(crossvec, middlevec)
+
+    rotation = np.matrix([middlevec, crossvec, thirdvec])
+
+    return(rotation.T)
