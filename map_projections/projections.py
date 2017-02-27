@@ -1,12 +1,12 @@
 import numpy as np
-from copy import deepcopy
 import matplotlib.pyplot as plt
 
 
 def transform_map(map_image, rot_mat,
                   in_projection='platecarre',
                   out_projection='platecarre',
-                  debug=True):
+                  display=True,
+                  debug=False):
 
     invalid_projection_msg = (
         "Please choose a projection from "
@@ -86,12 +86,15 @@ def transform_map(map_image, rot_mat,
     new_xs.shape = (ny, nx)
     new_ys.shape = (ny, nx)
 
-    new_map = deepcopy(map_image)
+    new_map = np.zeros(dtype = map_image.dtype,
+                       shape = map_image.shape)
+
     new_map[:, :, 0] = map_image[new_ys, new_xs, 0]
     new_map[:, :, 1] = map_image[new_ys, new_xs, 1]
     new_map[:, :, 2] = map_image[new_ys, new_xs, 2]
 
-    plt.imshow(new_map)
+    if display:
+        plt.imshow(new_map)
     return(new_map)
 
 
@@ -214,6 +217,8 @@ def rotationFromTwoLocations(
 
     vec1 = np.array(vec1)
     vec2 = np.array(vec2)
+    vec1 = vec1 / np.linalg.norm(vec1)
+    vec2 = vec2 / np.linalg.norm(vec2)
 
     middle = vec1 + vec2
     middlevec = middle / np.linalg.norm(middle)
@@ -223,7 +228,39 @@ def rotationFromTwoLocations(
 
     #  Determines handedness / puts them in the center
     thirdvec = np.cross(crossvec, middlevec)
+    thirdvec = thirdvec / np.linalg.norm(thirdvec)
 
     rotation = np.matrix([middlevec, crossvec, thirdvec])
 
     return(rotation.T)
+
+
+def eulerAxisAngleFromRotationMatrix(R):
+    """
+    Returns a tuple, (theta, v)
+    """
+    theta = np.arccos(0.5*(R[0,0] + R[1,1,] + R[2,2] - 1))
+
+    v1 = R[2, 1] - R[1, 2]
+    v2 = R[0, 2] - R[2, 0]
+    v3 = R[1, 0] - R[0, 1]
+
+    vec = np.array([v1, v2, v3]) / (2.0 * np.sin(theta))
+
+    return(theta, vec)
+
+
+def quaternionFromMatrix(R):
+    """
+    Returns a list [qi, qj, qk, qr]
+    """
+    qr = 0.5 * np.sqrt(1 + np.trace(R))
+    
+    v1 = R[2, 1] - R[1, 2]
+    v2 = R[0, 2] - R[2, 0]
+    v3 = R[1, 0] - R[0, 1]
+
+    qi, qj, qk = [v / 4.0*qr for v in [v1, v2, v3]]
+
+    return [qi, qj, qk, qr]
+    
