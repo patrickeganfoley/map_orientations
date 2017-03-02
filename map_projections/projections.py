@@ -119,7 +119,7 @@ def longitudeAndLatitudeFromGPPixel(x, y, mapdims):
 def longitudeAndLatitudeFromPCPixel(x, y, mapdims):
     nx, ny = mapdims
     longitude = 2*np.pi * ((x / float(nx)) - 0.5)
-    latitude = np.pi * ((y / float(ny)) - 0.5)
+    latitude = - (np.pi * ((y / float(ny)) - 0.5))
     return(longitude, latitude)
 
 
@@ -164,7 +164,7 @@ def pixel_for_plate_carre(longitude, latitude, mapdims):
     nx, ny = mapdims
 
     u = nx * (0.5 + (longitude / (2*np.pi)))
-    v = ny * (0.5 + (latitude / np.pi))
+    v = - (ny * (0.5 + (latitude / np.pi)))
 
     u = u.astype(int)
     v = v.astype(int)
@@ -227,10 +227,14 @@ def rotationFromTwoLocations(
     crossvec = crossprod / np.linalg.norm(crossprod)
 
     #  Determines handedness / puts them in the center
-    thirdvec = np.cross(crossvec, middlevec)
-    thirdvec = thirdvec / np.linalg.norm(thirdvec)
+    # thirdvec = np.cross(crossvec, middlevec)
+    # thirdvec = thirdvec / np.linalg.norm(thirdvec)
 
-    rotation = np.matrix([middlevec, crossvec, thirdvec])
+    #  diffvec
+    diffvec = vec2 - vec1
+    diffvec = diffvec / np.linalg.norm(diffvec)
+
+    rotation = np.matrix([middlevec, diffvec, crossvec])
 
     return(rotation.T)
 
