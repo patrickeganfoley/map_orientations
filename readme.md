@@ -19,3 +19,7 @@ These are made with night light maps.
 ![Lights Map with a Random Rotation](lights7.jpg)
 ![Lights Map with a Random Rotation](lights10.jpg)
 ![Lights Map with a Random Rotation](lights3.jpg)
+
+#  Rotating Blaueu's 1664 Terrarium Orbis
+
+![Rotating Blaueu](blaueu_framed.gif)
