@@ -1,4 +1,10 @@
-# Map Projections
+# Map Orientations
+
+Many people are familiar with the controversies surrounding competing map projections.  You've probably seen the [Mercatur projection](https://en.wikipedia.org/wiki/Mercator_projection) criticized for showing northern (and southern) regions as much larger than equatorial regions of the same true area.  And you're probably familiar with the [Gall Peters](https://en.wikipedia.org/wiki/Gall–Peters_projection) or maybe the [Plate-carre](https://en.wikipedia.org/wiki/Equirectangular_projection) as alternatives.  
+
+This repo is not about projections - instead it is concerned with the default _orientation_ of maps.  You can take any projection, rotate the globe a bit, re-project it with the same projection, and get an equally valid new map that just doesn't center the equator in the standard orientation.  This produces interesting and unusual maps that demonstrate the flaws of any projection.  If one of them looks very wrong, remember - the maps we're used to with the standard equatorial orientation are _just as wrong_!
+
+## What is in here?
 
 This repo contains a few notebooks and some script to generate interesting maps.  The maps are all standard projections, but with new orientations.
 
@@ -12,22 +18,13 @@ I would like to
   * also clean up the Blaueu notebook 
   * unify the Blaueu stuff with the other stuff so I can show the Blaueu map with a cylindrical projection
 
-#  Rotating Blaueu's 1664 Terrarium Orbis
+# Examples
+
+##  Rotating Blaueu's 1664 Terrarium Orbis
 
 ![Rotating Blaueu](blaueu_framed.gif)
 
-#  Examples
-
-This code produces maps like these:
-
-![A Normal Map, With the Earth Rotated South](downmap.png)
-
-
-![Lights Map with a Random Rotation](lights7.jpg)
-![Lights Map with a Random Rotation](lights10.jpg)
-![Lights Map with a Random Rotation](lights3.jpg)
-
-All we're doing here is rotating the globe.  We're not changing the projection math in any way - each of these maps is just as valid as the standard orientation maps you're used to.
+## Small Rotations
 
 This one just rotates the globe a bit clockwise from the standard orientation.
 ![a small clockwise rotation](smallxminus.png)
@@ -40,3 +37,17 @@ This pulls the south pole up a bit.
 
 And we can also pull the north pole down.
 ![a small rotation pulling the north pole down](smallyminus.png)
+
+##  Selected Maps
+
+This code produces maps like these:
+
+![A Normal Map, With the Earth Rotated South](downmap.png)
+
+
+![Lights Map with a Random Rotation](lights7.jpg)
+![Lights Map with a Random Rotation](lights10.jpg)
+![Lights Map with a Random Rotation](lights3.jpg)
+
+All we're doing here is rotating the globe.  We're not changing the projection math in any way - each of these maps is just as valid as the standard orientation maps you're used to.
+
