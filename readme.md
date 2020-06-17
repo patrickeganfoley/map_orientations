@@ -39,4 +39,4 @@ This pulls the south pole up a bit.
 ![a small rotation pulling the south pole up](smallyplus.png)
 
 And we can also pull the north pole down.
-![a small rotation pulling the north pole down](smallymins.png)
+![a small rotation pulling the north pole down](smallyminus.png)
