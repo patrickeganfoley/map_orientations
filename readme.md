@@ -1,25 +1,25 @@
-#  Maps Functions and Site
+# Map Projections
 
-Code to transform any cylindrical projection to any other, using any rotation of the globe.
+This repo contains a few notebooks and some script to generate interesting maps.  The maps are all standard projections, but with new orientations.
 
-Currently just has I/O for Gall-Peters and Plate-Carre projections.
+I would like to
+  * add a simple example gif rotating the globe a bit
+  * clean up the stuff in projections.py - it's VERY old (5+ years) and is pretty gross
+  * also clean up the Blaueu notebook 
+  * unify the Blaueu stuff with the other stuff so I can show the Blaueu map with a cylindrical projection
 
-Still needs:
-  *  function to produce rotation given two locations of interest
-  *  function to produce animations
+#  Rotating Blaueu's 1664 Terrarium Orbis
 
+![Rotating Blaueu](blaueu_framed.gif)
 
-This code produces maps like this one:
+#  Examples
+
+This code produces maps like these:
+
 ![A Normal Map, With the Earth Rotated South](downmap.png)
 
-## Other Examples
-
-These are made with night light maps.
 
 ![Lights Map with a Random Rotation](lights7.jpg)
 ![Lights Map with a Random Rotation](lights10.jpg)
 ![Lights Map with a Random Rotation](lights3.jpg)
 
-#  Rotating Blaueu's 1664 Terrarium Orbis
-
-![Rotating Blaueu](blaueu_framed.gif)
