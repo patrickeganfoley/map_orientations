@@ -27,3 +27,16 @@ This code produces maps like these:
 ![Lights Map with a Random Rotation](lights10.jpg)
 ![Lights Map with a Random Rotation](lights3.jpg)
 
+All we're doing here is rotating the globe.  We're not changing the projection math in any way - each of these maps is just as valid as the standard orientation maps you're used to.
+
+This one just rotates the globe a bit clockwise from the standard orientation.
+![a small clockwise rotation](smallxminus.png)
+
+And a small counterclockwise rotation:
+![a small clockwise rotation](smallxplus.png)
+
+This pulls the south pole up a bit.
+![a small rotation pulling the south pole up](smallyplus.png)
+
+And we can also pull the north pole down.
+![a small rotation pulling the north pole down](smallymins.png)
