@@ -17,6 +17,8 @@ I would like to
   * clean up the stuff in projections.py - it's VERY old (5+ years) and is pretty gross
   * also clean up the Blaueu notebook 
   * unify the Blaueu stuff with the other stuff so I can show the Blaueu map with a cylindrical projection
+  
+There's going to be a lot of stuff talking about "projections" that I need to change to "orientations".  Projections is the wrong word.
 
 # Examples
 
