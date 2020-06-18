@@ -8,9 +8,9 @@ This repo is not about projections - instead it is concerned with the default _o
 
 This repo contains a few notebooks and some script to generate interesting maps.  The maps are all standard projections, but with new orientations.
 
-[This notebook](readme_content/map_projections.ipynb) gives a quick overview with examples showing re-oriented cylindrical projections.  [This one](readme_content/explaining_map_projections.ipynb) is a bit messier but it attempts to walk through all the actual logic and explain it.  It's me working through how to do this. 
+[This notebook](notebooks/map_projections.ipynb) gives a quick overview with examples showing re-oriented cylindrical projections.  [This one](notebooks/explaining_map_projections.ipynb) is a bit messier but it attempts to walk through all the actual logic and explain it.  It's me working through how to do this. 
 
-[This notebook](readme_content/blaueu_stereographic.ipynb) is more recent and I think it's pretty cool - it takes Blaueu's _Terrarium Orbis_, one of the first stereographic projection maps, and rotates it.
+[This notebook](notebooks/blaueu_stereographic.ipynb) is more recent and I think it's pretty cool - it takes Blaueu's _Terrarium Orbis_, one of the first stereographic projection maps, and rotates it.
 
 I would like to
   * add a simple example gif rotating the globe a bit
@@ -24,32 +24,32 @@ There's going to be a lot of stuff talking about "projections" that I need to ch
 
 ##  Rotating Blaueu's 1664 Terrarium Orbis
 
-![Rotating Blaueu](readme_content/blaueu_framed.gif)
+![Rotating Blaueu](readme_images/blaueu_framed.gif)
 
 ## Small Rotations
 
 This one just rotates the globe a bit clockwise from the standard orientation.
-![a small clockwise rotation](readme_content/smallxminus.png)
+![a small clockwise rotation](readme_images/smallxminus.png)
 
 And a small counterclockwise rotation:
-![a small clockwise rotation](readme_content/smallxplus.png)
+![a small clockwise rotation](readme_images/smallxplus.png)
 
 This pulls the south pole up a bit.
-![a small rotation pulling the south pole up](readme_content/smallyplus.png)
+![a small rotation pulling the south pole up](readme_images/smallyplus.png)
 
 And we can also pull the north pole down.
-![a small rotation pulling the north pole down](readme_content/smallyminus.png)
+![a small rotation pulling the north pole down](readme_images/smallyminus.png)
 
 ##  Selected Maps
 
 This code produces maps like these:
 
-![A Normal Map, With the Earth Rotated South](readme_content/downmap.png)
+![A Normal Map, With the Earth Rotated South](readme_images/downmap.png)
 
 
-![Lights Map with a Random Rotation](readme_content/lights7.jpg)
-![Lights Map with a Random Rotation](readme_content/lights10.jpg)
-![Lights Map with a Random Rotation](readme_content/lights3.jpg)
+![Lights Map with a Random Rotation](readme_images/lights7.jpg)
+![Lights Map with a Random Rotation](readme_images/lights10.jpg)
+![Lights Map with a Random Rotation](readme_images/lights3.jpg)
 
 All we're doing here is rotating the globe.  We're not changing the projection math in any way - each of these maps is just as valid as the standard orientation maps you're used to.
 
