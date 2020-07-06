@@ -8,7 +8,7 @@ This repo is not about projections - instead it is concerned with the default _o
 
 This repo contains a few notebooks and some script to generate interesting maps.  The maps are all standard projections, but with new orientations.
 
-[This notebook](notebooks/map_projections.ipynb) gives a quick overview with examples showing re-oriented cylindrical projections.  [This one](notebooks/explaining_map_projections.ipynb) is a bit messier but it attempts to walk through all the actual logic and explain it.  It's me working through how to do this. 
+[This notebook](notebooks/map_orientations.ipynb) gives a quick overview with examples showing re-oriented cylindrical projections.  [This one](notebooks/explaining_map_orientations.ipynb) is a bit messier but it attempts to walk through all the actual logic and explain it.  It's me working through how to do this. 
 
 [This notebook](notebooks/blaueu_stereographic.ipynb) is more recent and I think it's pretty cool - it takes Blaueu's _Terrarium Orbis_, one of the first stereographic projection maps, and rotates it.
 
