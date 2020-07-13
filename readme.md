@@ -45,7 +45,7 @@ And we can also pull the north pole down.
 
 We can also take Blaueu's dual stereographic map and reproject it into a cylindrical (equirectangular here) projection.
 
-![Blaueu's map re-projected](platecarre_blau_higherrez3.jpg)
+![An equirectangular Terrarium Orbis](equirectangular_terrarium_orbis.jpg)
 
 The artefacts here are a bit from the curvature of the scanned image, and a bit from me not being exact when pulling out the hemispheres.
 
