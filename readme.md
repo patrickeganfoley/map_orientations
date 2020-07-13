@@ -40,6 +40,15 @@ This pulls the south pole up a bit.
 And we can also pull the north pole down.
 ![a small rotation pulling the north pole down](readme_images/smallyminus.png)
 
+
+## Re-projecting Blaueu's Terrarium Orbis
+
+We can also take Blaueu's dual stereographic map and reproject it into a cylindrical (equirectangular here) projection.
+
+![Blaueu's map re-projected](platecarre_blau_higherrez3.jpg)
+
+The artefacts here are a bit from the curvature of the scanned image, and a bit from me not being exact when pulling out the hemispheres.
+
 ##  Selected Maps
 
 This code produces maps like these:
