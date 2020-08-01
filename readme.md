@@ -20,6 +20,13 @@ I would like to
   
 There's going to be a lot of stuff talking about "projections" that I need to change to "orientations".  Projections is the wrong word.
 
+# CLI USAGE:
+```
+export MAP=~/Documents/map_orientations/input_images/nasa_earth_december_5400x2700.jpg
+export ROTATION="(0.0, -0.30, 0.0)"
+python /Users/liamfoley/Documents/map_orientations/map_orientations/main.py --map_image_path=$MAP --rotation=$ROTATION
+```
+
 # Examples
 
 ##  Rotating Blaueu's 1664 Terrarium Orbis
