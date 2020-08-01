@@ -1,13 +1,14 @@
 import numpy as np
 from imageio import imread
-import time
+
 
 class MapImage(object):
 
 
-    def __init__(self, map_image_path, in_projection, out_projection):
+    def __init__(self, map_image_path, rotation, in_projection, out_projection):
         self.map_image_path = map_image_path
         self.image = imread(map_image_path)
+        self.rotation = rotation
         self.ny = self.image.shape[0]
         self.nx = self.image.shape[1]
         self.in_projection = in_projection
@@ -37,11 +38,10 @@ class MapImage(object):
             self.longs, self.lats = longitudeAndLatitudeFromPCPixel(self.xs, self.ys, self.nx, self.ny)
         elif self.in_projection == 'gallpeters':
             self.longs, self.lats = longitudeAndLatitudeFromGPPixel(self.xs, self.ys, self.nx, self.ny)
-        else:
-            raise ValueError(INVALID_PROJECTION_MSG)
 
 
-    def set_new_longitude_latitude(self, x, y, z):
+
+    def set_new_longitude_latitude(self):
         # 70% of runtime
         
         def spatialCoordinatesFromLongitudeAndLatitude(longitude, latitude):
@@ -92,7 +92,7 @@ class MapImage(object):
             longitude = flip_longitudes(longitude)
             return longitude, latitude
 
-
+        x, y, z = self.rotation
         xxs, yys, zzs = spatialCoordinatesFromLongitudeAndLatitude(self.longs, self.lats)
         rot_mat = rotationFromXYZ(float(x), float(y), float(z))
         new_xxyyzz = np.dot(rot_mat, np.array([xxs, yys, zzs]))
@@ -136,8 +136,7 @@ class MapImage(object):
             self.new_xs, self.new_ys = pixel_for_plate_carre(self.new_longs, self.new_lats, self.nx, self.ny)
         elif self.out_projection == 'gallpeters':
             self.new_xs, self.new_ys = gall_peters_pixels(self.new_longs, self.new_lats, self.nx, self.ny)
-        else:
-            raise ValueError(INVALID_PROJECTION_MSG)
+
         self.new_xs.shape = (self.ny, self.nx)
         self.new_ys.shape = (self.ny, self.nx)
 
