@@ -1,8 +1,7 @@
 import click
-import numpy as np
 import re
 from imgcat import imgcat
-from imageio import imread, imwrite
+from imageio import imread
 from map_image import MapImage
 
 
@@ -19,9 +18,10 @@ def transform_map(map_image_path, rotation, in_projection='platecarre', out_proj
     x, y, z = re.findall('\d+.\d+', rotation)
 
     map_image = MapImage(map_image_path, in_projection, out_projection)
+    
     map_image.set_grid()
-    map_image.set_longs_lats()
-    map_image.set_new_longs_lats(x, y, z)
+    map_image.set_longitude_latitude()
+    map_image.set_new_longitude_latitude(x, y, z)
     map_image.set_new_grid()
     map_image.make_new_map()
     
@@ -29,3 +29,4 @@ def transform_map(map_image_path, rotation, in_projection='platecarre', out_proj
 
 if __name__ == '__main__':
     transform_map()
+
