@@ -10,7 +10,9 @@ INVALID_PROJECTION_MSG = "Please choose a projection from 'platecarre' or 'gallp
 @click.command()
 @click.option('--map_image_path', help='filepath of input map')
 @click.option('--rotation', help='E.G. "(0.0, -0.90, 0.0)"')
-def transform_map(map_image_path, rotation, in_projection='platecarre', out_projection='platecarre'):
+@click.option('--in_projection', default='platecarre')
+@click.option('--out_projection', default='platecarre')
+def transform_map(map_image_path, rotation, in_projection, out_projection):
     
     if map_image_path == None:
         raise ValueError('No Map!')
